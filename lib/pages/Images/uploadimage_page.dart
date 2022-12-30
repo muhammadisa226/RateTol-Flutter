@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, file_names, unused_local_variable, deprecated_member_use, non_constant_identifier_names, unused_import, unused_field, import_of_legacy_library_into_null_safe, avoid_print, unnecessary_new, avoid_unnecessary_containers, depend_on_referenced_packages, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, file_names, unused_local_variable, deprecated_member_use, non_constant_identifier_names, unused_import, unused_field, import_of_legacy_library_into_null_safe, avoid_print, unnecessary_new, avoid_unnecessary_containers, depend_on_referenced_packages, unnecessary_string_interpolations, unnecessary_brace_in_string_interps, prefer_const_literals_to_create_immutables, prefer_adjacent_string_concatenation
 
 import 'dart:convert';
 import 'dart:io';
@@ -48,15 +48,12 @@ class _UploadImageState extends State<UploadImage> {
     if (response.statusCode == 201) {
       http.Response res = await http.Response.fromStream(response);
       final resJson = jsonDecode(res.body);
-      message = resJson['message'];
+      message = jsonEncode(resJson['message']);
+      print(message);
       CoolAlert.show(
         context: context,
         title: 'Berhasil',
         type: CoolAlertType.success,
-        widget: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('${message}')],
-        ),
       );
     } else {
       CoolAlert.show(
@@ -103,6 +100,18 @@ class _UploadImageState extends State<UploadImage> {
                 "Upload",
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'message : ' + '${message.toString()}',
+                  style: TextStyle(fontSize: 17),
+                )
+              ],
             )
           ],
         ),
