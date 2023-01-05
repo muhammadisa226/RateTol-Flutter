@@ -45,7 +45,7 @@ class _UploadImageState extends State<UploadImage> {
 
     request.files.add(http.MultipartFile('image',
         selectedImage!.readAsBytes().asStream(), selectedImage!.lengthSync(),
-        filename: selectedImage!.path.split("/").last));
+        filename: selectedImage!.path.split("image_picker").last));
 
     request.headers.addAll(headers);
     final response = await request.send();

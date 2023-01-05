@@ -36,17 +36,15 @@ class _History2State extends State<History2> {
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+        scrollDirection: Axis.horizontal,
         child: DataTable(
           columnSpacing: 10,
           columns: [
-            DataColumn(label: Text('id')),
             DataColumn(label: Text('Name')),
             DataColumn(label: Text('Created_at')),
           ],
           rows: List.generate(listImage.length, (index) {
             return DataRow(cells: [
-              DataCell(Container(child: Text('${listImage[index].id}'))),
               DataCell(Container(child: Text(listImage[index].name))),
               DataCell(Container(child: Text(listImage[index].created_at)))
             ]);
