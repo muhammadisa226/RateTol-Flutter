@@ -2,11 +2,10 @@
 
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:cool_alert/cool_alert.dart';
 
 class UploadImage extends StatefulWidget {
   const UploadImage({super.key});
@@ -17,7 +16,9 @@ class UploadImage extends StatefulWidget {
 
 class _UploadImageState extends State<UploadImage> {
   File? selectedImage;
-  String message = '';
+  String jenis = '';
+  String tarif = '';
+  bool visible = false;
 
   Future getImageGallery() async {
     final pickedImage =
@@ -35,6 +36,9 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   Future uploadImage() async {
+    setState(() {
+      visible = true;
+    });
     final request = http.MultipartRequest(
         "POST", Uri.parse('http://192.168.43.123:5000/image/upload'));
     final headers = {"Content-type": "multipart/form-data"};
@@ -48,23 +52,11 @@ class _UploadImageState extends State<UploadImage> {
     if (response.statusCode == 201) {
       http.Response res = await http.Response.fromStream(response);
       final resJson = jsonDecode(res.body);
-      message = jsonEncode(resJson['message']);
-      print(message);
-      CoolAlert.show(
-        context: context,
-        title: 'Berhasil',
-        type: CoolAlertType.success,
-      );
-    } else {
-      CoolAlert.show(
-        context: context,
-        title: 'Gagal',
-        type: CoolAlertType.error,
-        widget: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('Data Image Gagal Diupload')],
-        ),
-      );
+      jenis = resJson['message']['jenis_kendaraan'];
+      tarif = resJson['message']['tarif'];
+      setState(() {
+        visible = false;
+      });
     }
 
     setState(() {});
@@ -104,13 +96,27 @@ class _UploadImageState extends State<UploadImage> {
             SizedBox(
               height: 15,
             ),
+            Visibility(
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                visible: visible,
+                child: Container(child: CircularProgressIndicator())),
+            SizedBox(
+              height: 10,
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'message : ' + '${message.toString()}',
+                  'Jenis: ' + '${jenis}',
                   style: TextStyle(fontSize: 17),
-                )
+                ),
+                SizedBox(height: 15),
+                Text(
+                  'Tarif: ' + '${tarif}',
+                  style: TextStyle(fontSize: 17),
+                ),
               ],
             )
           ],

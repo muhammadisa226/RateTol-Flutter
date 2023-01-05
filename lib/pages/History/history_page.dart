@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, file_names, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, file_names, prefer_interpolation_to_compose_strings, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:ratetol/model/images_model.dart';
 import 'package:ratetol/module/images/image_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class History extends StatefulWidget {
   const History({super.key});

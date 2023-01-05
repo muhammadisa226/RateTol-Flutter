@@ -7,18 +7,13 @@ import 'package:ratetol/model/images_model.dart';
 
 class ImageRepository {
   Future getData() async {
-    try {
-      final response =
-          await http.get(Uri.parse('http://192.168.43.123:5000/image/all'));
-      if (response.statusCode == 200) {
-        // print(response.body);
-        Iterable it = jsonDecode(response.body);
-
-        List<Images> image = it.map((e) => Images.fromJson(e)).toList();
-        return image;
-      }
-    } catch (e) {
-      print(e.toString());
+    final response =
+        await http.get(Uri.parse('http://192.168.43.123:5000/image/all'));
+    if (response.statusCode == 200) {
+      // print(response.body);
+      Iterable it = jsonDecode(response.body);
+      List<Images> image = it.map((e) => Images.fromJson(e)).toList();
+      return image;
     }
   }
 }

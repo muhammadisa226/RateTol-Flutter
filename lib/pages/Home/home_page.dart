@@ -1,9 +1,12 @@
-// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, use_build_context_synchronously, unnecessary_import, unnecessary_new
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ratetol/pages/History/history_page.dart';
+import 'package:ratetol/pages/History/history_page2.dart';
+import 'package:ratetol/pages/Login/login_page.dart';
 import 'package:ratetol/pages/welcome/welcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Images/uploadimage_page.dart';
 
@@ -18,6 +21,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  _logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('login', false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 
   @override
@@ -50,13 +60,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
               ),
-              accountEmail: Text(
-                "admin@example.com",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              accountEmail: null,
             ),
             ListTile(
               leading: const Icon(Icons.home),
@@ -68,9 +72,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
                 leading: const Icon(Icons.exit_to_app),
                 title: const Text('Exit'),
-                onTap: () {
-                  SystemNavigator.pop();
-                }),
+                onTap: _logOut),
           ],
         ),
       ),
@@ -83,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => History()));
+                    MaterialPageRoute(builder: (context) => History2()));
               },
               splashColor: Colors.lightBlueAccent,
               child: Center(

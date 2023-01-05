@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:ratetol/pages/Home/home_page.dart';
 import 'package:ratetol/pages/Login/login_page.dart';
-import 'package:ratetol/pages/Signup/signup_page.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -68,54 +66,6 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ),
               ),
-              Center(
-                child: ElevatedButton(
-                  child: Text(
-                    'SIGN UP',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'BebasNeue',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpPage()));
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(horizontal: 80)),
-                    textStyle: MaterialStateProperty.all(
-                      TextStyle(fontSize: 25),
-                    ),
-                  ),
-                ),
-              ),
-
-              Center(
-                child: ElevatedButton(
-                  child: Text(
-                    'HOME',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'BebasNeue',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(horizontal: 80)),
-                    textStyle: MaterialStateProperty.all(
-                      TextStyle(fontSize: 25),
-                    ),
-                  ),
-                ),
-              ),
-
               SizedBox(
                 height: 25,
               ),

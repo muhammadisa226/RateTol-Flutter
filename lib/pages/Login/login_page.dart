@@ -1,7 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_import, avoid_unnecessary_containers, unused_element, prefer_interpolation_to_compose_strings, use_build_context_synchronously, unused_local_variable, avoid_print
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:ratetol/pages/Signup/signup_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,6 +15,86 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool hidePassword = true;
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool visible = false;
+  String message = '';
+  final String sUrl = "http://192.168.43.123:5000/";
+  _cekLogin() async {
+    setState(() {
+      visible = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    var params = "login?username=" +
+        userNameController.text +
+        "&password=" +
+        passwordController.text;
+
+    var res = await http.post(Uri.parse(sUrl + params));
+    if (res.statusCode == 200) {
+      prefs.setBool('login', true);
+      var response = json.decode(res.body);
+      message = response['message'];
+      setState(() {
+        visible = false;
+      });
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+      showSuccessMessage(message);
+    } else {
+      setState(() {
+        visible = false;
+        var response = json.decode(res.body);
+        message = response['message'];
+      });
+      showErrorMessage(message);
+    }
+  }
+
+  showErrorMessage(String message) {
+    final snackBar = SnackBar(
+      content: Container(
+        decoration: const BoxDecoration(
+          color: Colors.red,
+        ),
+        margin: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void showSuccessMessage(String message) {
+    final snackBar = SnackBar(
+      content: Container(
+        decoration: const BoxDecoration(
+          color: Colors.green,
+        ),
+        margin: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      backgroundColor: Colors.green,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
+              Visibility(
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  visible: visible,
+                  child: Container(child: CircularProgressIndicator())),
               SizedBox(
                 height: 10,
               ),
@@ -63,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: TextField(
+                      controller: userNameController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.person),
@@ -86,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
                     child: TextField(
+                      controller: passwordController,
                       obscureText: hidePassword,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -120,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontFamily: 'BebasNeue',
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {},
+                  onPressed: _cekLogin,
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                     padding: MaterialStateProperty.all(
@@ -136,28 +228,6 @@ class _LoginPageState extends State<LoginPage> {
                 height: 25,
               ),
               //not member? register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don't have an account?",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpPage()));
-                    },
-                    child: Text(
-                      ' SignUp Now',
-                      style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),
