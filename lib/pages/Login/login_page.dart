@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                height: 25,
+                height: 15,
               ),
               //username textfield
               Padding(
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               //password textfield
               Padding(

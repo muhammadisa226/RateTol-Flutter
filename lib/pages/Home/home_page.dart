@@ -1,5 +1,7 @@
 // ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, use_build_context_synchronously, unnecessary_import, unnecessary_new
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ratetol/pages/History/history_page.dart';
@@ -68,9 +70,13 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-                leading: const Icon(Icons.exit_to_app),
-                title: const Text('Exit'),
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
                 onTap: _logOut),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: const Text('Exit'),
+                onTap: () => exit(0)),
           ],
         ),
       ),
