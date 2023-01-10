@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ratetol/pages/History/history_page.dart';
 import 'package:ratetol/pages/Login/login_page.dart';
-import 'package:ratetol/pages/welcome/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Images/uploadimage_page.dart';

@@ -15,9 +15,18 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
+  static const List<String> list = <String>[
+    'Semarang',
+    'Solo',
+    'Brebes Barat',
+    'Brebes Timur'
+  ];
+
   File? selectedImage;
   String jenis = '';
   String tarif = '';
+  String tujuan = '';
+  String SelectedTujuan = list.first;
   bool visible = false;
 
   Future getImageGallery() async {
@@ -40,20 +49,24 @@ class _UploadImageState extends State<UploadImage> {
       visible = true;
     });
     final request = http.MultipartRequest(
-        "POST", Uri.parse('http://192.168.43.123:5000/image/upload'));
+      "POST",
+      Uri.parse('http://192.168.43.123:5000/image/upload'),
+    );
     final headers = {"Content-type": "multipart/form-data"};
 
     request.files.add(http.MultipartFile('image',
         selectedImage!.readAsBytes().asStream(), selectedImage!.lengthSync(),
         filename: selectedImage!.path.split("image_picker").last));
-
+    request.fields['tujuan'] = SelectedTujuan;
     request.headers.addAll(headers);
     final response = await request.send();
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       http.Response res = await http.Response.fromStream(response);
       final resJson = jsonDecode(res.body);
       jenis = resJson['message']['jenis_kendaraan'];
       tarif = resJson['message']['tarif'];
+      tujuan = resJson['message']['tujuan'];
+
       setState(() {
         visible = false;
       });
@@ -78,9 +91,28 @@ class _UploadImageState extends State<UploadImage> {
                 ? Text("Please pick a Image upload")
                 : Image.file(
                     selectedImage!,
-                    width: 500,
-                    height: 300,
+                    width: 250,
+                    height: 150,
                   ),
+            SizedBox(height: 20),
+            Text('Pilih Tujuan : '),
+            DropdownButton<String>(
+              value: SelectedTujuan,
+              elevation: 16,
+              style: const TextStyle(color: Colors.black, fontSize: 14),
+              onChanged: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
+                  SelectedTujuan = value!;
+                });
+              },
+              items: list.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
             TextButton.icon(
               style: ButtonStyle(
                 backgroundColor:
@@ -92,9 +124,6 @@ class _UploadImageState extends State<UploadImage> {
                 "Upload",
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
-            ),
-            SizedBox(
-              height: 15,
             ),
             Visibility(
                 maintainSize: true,
@@ -115,6 +144,11 @@ class _UploadImageState extends State<UploadImage> {
                 SizedBox(height: 15),
                 Text(
                   'Tarif: ' + '${tarif}',
+                  style: TextStyle(fontSize: 17),
+                ),
+                SizedBox(height: 15),
+                Text(
+                  'Tujuan:' + ' ${tujuan}',
                   style: TextStyle(fontSize: 17),
                 ),
               ],

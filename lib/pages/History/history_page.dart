@@ -45,13 +45,20 @@ class _HistoryState extends State<History> {
                   SizedBox(height: 10),
                   Text(
                     'Name : ${listImage[index].name}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.normal),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
                     'Created_at : ${listImage[index].created_at}',
+                    style: TextStyle(fontWeight: FontWeight.normal),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Tujuan : ${listImage[index].tujuan}',
                     style: TextStyle(fontWeight: FontWeight.normal),
                   ),
                 ],

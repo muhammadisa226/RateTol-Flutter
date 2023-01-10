@@ -19,18 +19,21 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   bool visible = false;
   String message = '';
-  final String sUrl = "http://192.168.43.123:5000/";
+  final String sUrl = "http://192.168.43.123:5000/login";
   _cekLogin() async {
     setState(() {
       visible = true;
     });
     final prefs = await SharedPreferences.getInstance();
-    var params = "login?username=" +
-        userNameController.text +
-        "&password=" +
-        passwordController.text;
 
-    var res = await http.post(Uri.parse(sUrl + params));
+    var res = await http.post(
+        Uri.parse(
+          sUrl,
+        ),
+        body: {
+          'username': userNameController.text,
+          'password': passwordController.text
+        });
     if (res.statusCode == 200) {
       prefs.setBool('login', true);
       var response = json.decode(res.body);
