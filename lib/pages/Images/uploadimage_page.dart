@@ -41,6 +41,7 @@ class _UploadImageState extends State<UploadImage> {
     final pickedImage =
         await ImagePicker().getImage(source: ImageSource.camera);
     selectedImage = File(pickedImage!.path);
+    print(selectedImage);
     setState(() {});
   }
 
@@ -53,10 +54,9 @@ class _UploadImageState extends State<UploadImage> {
       Uri.parse('http://192.168.43.123:5000/image/upload'),
     );
     final headers = {"Content-type": "multipart/form-data"};
-
     request.files.add(http.MultipartFile('image',
         selectedImage!.readAsBytes().asStream(), selectedImage!.lengthSync(),
-        filename: selectedImage!.path.split("image_picker").last));
+        filename: selectedImage!.path.split("/").last));
     request.fields['tujuan'] = SelectedTujuan;
     request.headers.addAll(headers);
     final response = await request.send();
