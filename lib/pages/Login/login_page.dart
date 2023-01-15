@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setBool('login', true);
       var response = json.decode(res.body);
       message = response['message'];
+      
       setState(() {
         visible = false;
       });

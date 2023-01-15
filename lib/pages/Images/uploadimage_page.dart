@@ -95,11 +95,14 @@ class _UploadImageState extends State<UploadImage> {
                     height: 150,
                   ),
             SizedBox(height: 20),
-            Text('Pilih Tujuan : '),
+            Text(
+              'Pilih Tujuan : ',
+              style: TextStyle(fontSize: 18),
+            ),
             DropdownButton<String>(
               value: SelectedTujuan,
               elevation: 16,
-              style: const TextStyle(color: Colors.black, fontSize: 14),
+              style: const TextStyle(color: Colors.black, fontSize: 20),
               onChanged: (String? value) {
                 // This is called when the user selects an item.
                 setState(() {
@@ -112,6 +115,9 @@ class _UploadImageState extends State<UploadImage> {
                   child: Text(value),
                 );
               }).toList(),
+            ),
+            SizedBox(
+              height: 10,
             ),
             TextButton.icon(
               style: ButtonStyle(
@@ -139,17 +145,17 @@ class _UploadImageState extends State<UploadImage> {
               children: [
                 Text(
                   'Jenis: ' + '${jenis}',
-                  style: TextStyle(fontSize: 17),
+                  style: TextStyle(fontSize: 25),
                 ),
                 SizedBox(height: 15),
                 Text(
                   'Tarif: ' + '${tarif}',
-                  style: TextStyle(fontSize: 17),
+                  style: TextStyle(fontSize: 25),
                 ),
                 SizedBox(height: 15),
                 Text(
                   'Tujuan:' + ' ${tujuan}',
-                  style: TextStyle(fontSize: 17),
+                  style: TextStyle(fontSize: 25),
                 ),
               ],
             )
